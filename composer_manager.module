@@ -298,7 +298,7 @@ function composer_manager_file_dir($ensure_write_permission = FALSE) {
   }
 
   $dir_uri = variable_get('composer_manager_file_dir', $scheme . '://composer');
-  if (!composer_manager_prepare_directory($dir_uri, $ensure_write_permission)) {
+  if ($ensure_write_permission && !composer_manager_prepare_directory($dir_uri)) {
     throw new \RuntimeException(t('Error creating directory: @dir', array('@dir' => $dir_uri)));
   }
   if (!$realpath = drupal_realpath($dir_uri)) {

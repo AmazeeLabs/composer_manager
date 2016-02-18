@@ -156,7 +156,7 @@ function composer_manager_build_json(array $data) {
  * @throws \RuntimeException
  */
 function composer_manager_put_file($dir_uri, array $json) {
-  composer_manager_prepare_directory($dir_uri, TRUE);
+  composer_manager_prepare_directory($dir_uri);
 
   // Make the composer.json file human readable for PHP >= 5.4.
   // @see drupal_json_encode()
@@ -197,14 +197,11 @@ function composer_manager_put_file($dir_uri, array $json) {
  *
  * @param string $directory
  *   The URI or path to the directory being prepared.
- * @param bool $ensure_write_permission
- *   Indicates whether the write permission should be ensured for the directory.
  *
  * @return bool
  */
-function composer_manager_prepare_directory($directory, $ensure_write_permission) {
-  $options = $ensure_write_permission ? FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS : FILE_CREATE_DIRECTORY;
-  if (!file_prepare_directory($directory, $options)) {
+function composer_manager_prepare_directory($directory) {
+  if (!file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
     return FALSE;
   }
   if (0 === strpos($directory, 'public://')) {
